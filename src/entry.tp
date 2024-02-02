@@ -1,0 +1,108 @@
+{
+  "api":7,
+  "version":1,
+  "name":"Make Shortcut",
+  "id":"win_shortcut",
+  "configuration" : {
+    "colorDark" : "#FF0000",
+    "colorLight" : "#00FF00",
+    "parentCategory" : "misc"
+  },
+  "plugin_start_cmd":"%TP_PLUGIN_FOLDER%MakeShortcut\\TPShortcut.exe",
+  "categories": [
+    {
+      "id":"win_shortcut",
+      "name":"MakeShortcut",
+      "imagepath":"%TP_PLUGIN_FOLDER%MakeShortcut/icon.png",
+      "actions": [ ],
+      "events": [ 
+        {
+          "id":"shortcut_icon",
+          "name":"Keep Buttons Icon same as Shortcut",
+          "format":"When we eat $val as breakfast",
+          "type":"communicate",
+          "valueType":"choice",
+          "valueChoices": [
+            "shortcut_icon1",
+            "shortcut_icon2",
+            "shortcut_icon3",
+            "shortcut_icon4",
+            "shortcut_icon5",
+          ],
+          "valueStateId":"icon"
+        }
+      ],
+      "connectors": [ ],
+      "states": [ 
+        {
+            "id": "shortcut_icon1",
+            "type": "text",
+            "desc": "Path of the shortcut icon 1",
+            "default": "%TP_PLUGIN_FOLDER%MakeShortcut\shortcut_icon1.ico"
+        },
+        {
+            "id": "shortcut_icon2",
+            "type": "text",
+            "desc": "Path of the shortcut icon 2",
+            "default": "%TP_PLUGIN_FOLDER%MakeShortcut\shortcut_icon2.ico"
+        },
+        {
+            "id": "shortcut_icon3",
+            "type": "text",
+            "desc": "Path of the shortcut icon 3",
+            "default": "%TP_PLUGIN_FOLDER%MakeShortcut\shortcut_icon3.ico"
+        },
+        {
+            "id": "shortcut_icon4",
+            "type": "text",
+            "desc": "Path of the shortcut icon 4",
+            "default": "%TP_PLUGIN_FOLDER%MakeShortcut\shortcut_icon4.ico"
+        },
+        {
+            "id": "shortcut_icon5",
+            "type": "text",
+            "desc": "Path of the shortcut icon 5",
+            "default": "%TP_PLUGIN_FOLDER%MakeShortcut\shortcut_icon5.ico"
+        },
+        {
+            "id": "shortcut_path1",
+            "type": "text",
+            "desc": "Path of the shortcut 1",
+            "default": ""
+        },
+        {
+            "id": "shortcut_path2",
+            "type": "text",
+            "desc": "Path of the shortcut 2",
+            "default": ""
+        },
+        {
+            "id": "shortcut_path3",
+            "type": "text",
+            "desc": "Path of the shortcut 3",
+            "default": ""
+        },
+        {
+            "id": "shortcut_path4",
+            "type": "text",
+            "desc": "Path of the shortcut 4",
+            "default": ""
+        },
+        {
+            "id": "shortcut_path5",
+            "type": "text",
+            "desc": "Path of the shortcut 5",
+            "default": ""
+        },
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "name":"Shortcut folder",
+      "type":"text",
+      "isPassword":false,
+      "readOnly":false
+    },
+  ],
+}
