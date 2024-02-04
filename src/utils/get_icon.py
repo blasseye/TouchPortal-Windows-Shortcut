@@ -3,6 +3,7 @@ import shutil
 import win32api
 import win32ui
 import win32gui
+import win32com.client
 import win32con
 
 from utils.tools import get_target_path, get_extension
@@ -18,16 +19,26 @@ def get_url_icon(file_path, output_path):
             return
         elif extension == ".exe":
             icon = get_exe_icon(icon_file, output_path)
-            return icon
+            return 
     else:
-        return None
+        return
 
 def get_lnk_icon(file_path, output_path):
-    target = get_target_path(file_path)
-    extension = get_extension(target)
-    if extension == ".exe":
-        icon = get_exe_icon(target, output_path)
-        return icon
+    shell = win32com.client.Dispatch("WScript.Shell")
+    shortcut = shell.CreateShortCut(file_path)
+    icon_location = shortcut.IconLocation.split(',')
+    icon_file = icon_location[0].strip('"')
+    extension = get_extension(icon_file)
+    if extension == ".ico":
+        shutil.copy(icon_file, output_path)
+        return
+    else : 
+        target = get_target_path(file_path)
+        extension = get_extension(target)
+        if extension == ".exe":
+            icon = get_exe_icon(target, output_path)
+            return
+    return
 
 def get_exe_icon(file_path, output_path):
     ico_x = win32api.GetSystemMetrics(win32con.SM_CXICON)
