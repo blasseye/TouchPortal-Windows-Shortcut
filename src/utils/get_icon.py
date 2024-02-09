@@ -1,4 +1,5 @@
 import configparser
+import os
 import shutil
 import win32api
 import win32ui
@@ -55,3 +56,19 @@ def get_exe_icon(file_path, output_path):
     hdc.DrawIcon( (0,0), large[0] )
     hbmp.SaveBitmapFile( hdc, output_path)    
     return
+
+folder_path = 'C:\\Users\\benja\\Jeux\\'
+folder_output_icon = 'D:\\Project\\TouchPortal\\Plugin\\Shortcut\\Test-plugin\\temp\\'
+files = os.listdir(folder_path)
+i = 0
+for file in files:
+    output_ico= folder_output_icon+str(i)+'.ico'
+    file_path=folder_path+file
+    extension = get_extension(file_path)
+    if extension == '.url':
+        get_url_icon(file_path, output_ico)
+    elif extension == '.lnk':
+        get_lnk_icon(file_path, output_ico)
+    elif extension == '.exe':
+        get_exe_icon(file_path, output_ico)
+    i+=1
