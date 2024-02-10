@@ -1,8 +1,8 @@
 {
   "api":7,
   "version":1,
-  "name":"Make Shortcut",
-  "id":"win_shortcut",
+  "name":"Win Shortcut",
+  "id":"TP_WIN_SHORTCUT",
   "configuration" : {
     "colorDark" : "#FF0000",
     "colorLight" : "#00FF00",
@@ -17,7 +17,7 @@
       "actions": [ ],
       "events": [ 
         {
-          "id":"shortcut_icon",
+          "id":"TP.Plugins.win_shortcut.events.shortcut_icon",
           "name":"Keep Buttons Icon same as Shortcut",
           "format":"When we eat $val as breakfast",
           "type":"communicate",
@@ -33,63 +33,75 @@
         }
       ],
       "connectors": [ ],
-      "states": [ 
+      "states": [
         {
-            "id": "shortcut_icon1",
+            "id": "TP.Plugins.win_shortcut.states.shortcut_icon_0",
+            "type": "text",
+            "desc": "Path of the shortcut icon 0",
+            "default": "%TP_PLUGIN_FOLDER%MakeShortcut\shortcut_icon_0.ico"
+        },
+        {
+            "id": "TP.Plugins.win_shortcut.states.shortcut_icon_1",
             "type": "text",
             "desc": "Path of the shortcut icon 1",
-            "default": "%TP_PLUGIN_FOLDER%MakeShortcut\shortcut_icon1.ico"
+            "default": "%TP_PLUGIN_FOLDER%MakeShortcut\shortcut_icon_1.ico"
         },
         {
-            "id": "shortcut_icon2",
+            "id": "TP.Plugins.win_shortcut.states.shortcut_icon_2",
             "type": "text",
             "desc": "Path of the shortcut icon 2",
-            "default": "%TP_PLUGIN_FOLDER%MakeShortcut\shortcut_icon2.ico"
+            "default": "%TP_PLUGIN_FOLDER%MakeShortcut\shortcut_icon_2.ico"
         },
         {
-            "id": "shortcut_icon3",
+            "id": "TP.Plugins.win_shortcut.states.shortcut_icon_3",
             "type": "text",
             "desc": "Path of the shortcut icon 3",
-            "default": "%TP_PLUGIN_FOLDER%MakeShortcut\shortcut_icon3.ico"
+            "default": "%TP_PLUGIN_FOLDER%MakeShortcut\shortcut_icon_3.ico"
         },
         {
-            "id": "shortcut_icon4",
+            "id": "TP.Plugins.win_shortcut.states.shortcut_icon_4",
             "type": "text",
             "desc": "Path of the shortcut icon 4",
-            "default": "%TP_PLUGIN_FOLDER%MakeShortcut\shortcut_icon4.ico"
+            "default": "%TP_PLUGIN_FOLDER%MakeShortcut\shortcut_icon_4.ico"
         },
         {
-            "id": "shortcut_icon5",
+            "id": "TP.Plugins.win_shortcut.states.shortcut_icon_5",
             "type": "text",
             "desc": "Path of the shortcut icon 5",
-            "default": "%TP_PLUGIN_FOLDER%MakeShortcut\shortcut_icon5.ico"
+            "default": "%TP_PLUGIN_FOLDER%MakeShortcut\shortcut_icon_5.ico"
         },
         {
-            "id": "shortcut_path1",
+            "id": "TP.Plugins.win_shortcut.states.shortcut_path_0",
+            "type": "text",
+            "desc": "Path of the shortcut 0",
+            "default": ""
+        },
+        {
+            "id": "TP.Plugins.win_shortcut.states.shortcut_path_1",
             "type": "text",
             "desc": "Path of the shortcut 1",
             "default": ""
         },
         {
-            "id": "shortcut_path2",
+            "id": "TP.Plugins.win_shortcut.states.shortcut_path_2",
             "type": "text",
             "desc": "Path of the shortcut 2",
             "default": ""
         },
         {
-            "id": "shortcut_path3",
+            "id": "TP.Plugins.win_shortcut.states.shortcut_path_3",
             "type": "text",
             "desc": "Path of the shortcut 3",
             "default": ""
         },
         {
-            "id": "shortcut_path4",
+            "id": "TP.Plugins.win_shortcut.states.shortcut_path_4",
             "type": "text",
             "desc": "Path of the shortcut 4",
             "default": ""
         },
         {
-            "id": "shortcut_path5",
+            "id": "TP.Plugins.win_shortcut.states.shortcut_path_5",
             "type": "text",
             "desc": "Path of the shortcut 5",
             "default": ""

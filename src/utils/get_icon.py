@@ -57,13 +57,9 @@ def get_exe_icon(file_path, output_path):
     hbmp.SaveBitmapFile( hdc, output_path)    
     return
 
-folder_path = 'C:\\Users\\benja\\Jeux\\'
-folder_output_icon = 'D:\\Project\\TouchPortal\\Plugin\\Shortcut\\Test-plugin\\temp\\'
-files = os.listdir(folder_path)
-i = 0
-for file in files:
-    output_ico= folder_output_icon+str(i)+'.ico'
-    file_path=folder_path+file
+def updateIcon(folder_path,folder_output_icon,file,nb):
+    output_ico = f"{folder_output_icon}shortcut_icon_{nb}.ico"
+    file_path = f"{folder_path}{file}"
     extension = get_extension(file_path)
     if extension == '.url':
         get_url_icon(file_path, output_ico)
@@ -71,4 +67,3 @@ for file in files:
         get_lnk_icon(file_path, output_ico)
     elif extension == '.exe':
         get_exe_icon(file_path, output_ico)
-    i+=1
