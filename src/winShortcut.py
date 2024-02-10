@@ -38,14 +38,14 @@ def stateUpdate():
 def onStart(data):
     global running
     """Checking if Plugin needs updated"""
-    github_check = TP.Tools.updateCheck("KillerBOSS2019", "WinTools")
+    github_check = TP.Tools.updateCheck("blasseye", "TouchPortal-Windows-Shortcut")
     plugin_version = str(data['pluginVersion'])
     plugin_version = plugin_version[:1] + "." + plugin_version[1:]
     if github_check[1:4] != plugin_version[0:3]:
         TPClient.showNotification(
-                notificationId="KillerBOSS.TP.Plugins.Update_Check",
-                title=f"WinTools v{github_check[1:4]} is available",
-                msg="A new Wintools Version is available and ready to Download. This may include Bug Fixes and or New Features",
+                notificationId="blasseye.TP.Plugins.Update_Check",
+                title=f"TouchPortal-Windows-Shortcut v{github_check[1:4]} is available",
+                msg="A new TouchPortal-Windows-Shortcut Version is available and ready to Download. This may include Bug Fixes and or New Features",
                 options= [
                     {
                         "id":"Download Update",
