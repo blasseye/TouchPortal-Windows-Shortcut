@@ -111,7 +111,7 @@
   ],
   "settings": [
     {
-      "name":"Shortcut folder",
+      "name":"Shortcut directory",
       "type":"text",
       "isPassword":false,
       "readOnly":false

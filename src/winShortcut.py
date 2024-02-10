@@ -1,6 +1,6 @@
 import TouchPortalAPI as TP
 import os
-from utils import get_icon
+from utils import getIcon
 
 directory_shortcuts = '...'
 directory_icons = '...'
@@ -30,7 +30,7 @@ def stateUpdate():
     list_file = updateShortcutList(directory_shortcuts)
     for i in range(nb_shortcut):
         TPClient.stateUpdate(f"TP.Plugins.win_shortcut.states.shortcut_path_{i}",list_file[i])
-        get_icon.updateIcon(directory_shortcuts,directory_icons,list_file[i],i)
+        getIcon.updateIcon(directory_shortcuts,directory_icons,list_file[i],i)
 
     
 # This event handler will run once when the client connects to Touch Portal
