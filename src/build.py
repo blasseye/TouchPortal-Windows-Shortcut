@@ -1,7 +1,7 @@
 from TouchPortalAPI.tppbuild import *
 from TPPEntry import __version__
 
-PLUGIN_MAIN = "winShortcut.py"
+PLUGIN_MAIN = "TPWinShortcut.py"
 
 PLUGIN_EXE_NAME = "TPWinShortcut"
 

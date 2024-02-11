@@ -10,7 +10,7 @@ TP_PLUGIN_INFO = {
     'version': __version__,
     'name': "Windows-Shortcut",
     "id": PLUGIN_ID,
-    'plugin_start_cmd_windows': "%TP_PLUGIN_FOLDER%winShortcut\\winShortcut.exe",
+    'plugin_start_cmd_windows': "%TP_PLUGIN_FOLDER%TPWinShortcut\\TPWinShortcut.exe",
     'configuration': {
         'colorDark': '#0d162c',
         'colorLight': '#4b84f3',
@@ -35,7 +35,7 @@ TP_PLUGIN_CATEGORIES = {
     "main": {
         "id": PLUGIN_ID + ".main",
         "name": "Touch Portal Windows Shortcut",
-        "imagepath": "%TP_PLUGIN_FOLDER%winShortcut\\icon.png",
+        "imagepath": "%TP_PLUGIN_FOLDER%TPWinShortcut\\icon.png",
     },
     "icon": {
         "id": PLUGIN_ID + ".icon",
@@ -58,42 +58,42 @@ TP_PLUGIN_STATES = {
         "id": PLUGIN_ID + ".states.shortcut_icon_0",
         "type": "text",
         "desc": "Path of the shortcut icon 0",
-        "default": "%TP_PLUGIN_FOLDER%winShortcut\shortcut_icon_0.ico"
+        "default": "%TP_PLUGIN_FOLDER%TPWinShortcut\shortcut_icon_0.ico"
     },
     "shortcut_icon_1": {
         "category": "icon",
         "id": PLUGIN_ID + ".states.shortcut_icon_1",
         "type": "text",
         "desc": "Path of the shortcut icon 1",
-        "default": "%TP_PLUGIN_FOLDER%winShortcut\shortcut_icon_1.ico"
+        "default": "%TP_PLUGIN_FOLDER%TPWinShortcut\shortcut_icon_1.ico"
     },
     "shortcut_icon_2": {
         "category": "icon",
         "id": PLUGIN_ID + ".states.shortcut_icon_2",
         "type": "text",
         "desc": "Path of the shortcut icon 2",
-        "default": "%TP_PLUGIN_FOLDER%winShortcut\shortcut_icon_2.ico"
+        "default": "%TP_PLUGIN_FOLDER%TPWinShortcut\shortcut_icon_2.ico"
     },
     "shortcut_icon_3": {
         "category": "icon",
         "id": PLUGIN_ID + ".states.shortcut_icon_3",
         "type": "text",
         "desc": "Path of the shortcut icon 3",
-        "default": "%TP_PLUGIN_FOLDER%winShortcut\shortcut_icon_3.ico"
+        "default": "%TP_PLUGIN_FOLDER%TPWinShortcut\shortcut_icon_3.ico"
     },
     "shortcut_icon_4": {
         "category": "icon",
         "id": PLUGIN_ID + ".states.shortcut_icon_4",
         "type": "text",
         "desc": "Path of the shortcut icon 4",
-        "default": "%TP_PLUGIN_FOLDER%winShortcut\shortcut_icon_4.ico"
+        "default": "%TP_PLUGIN_FOLDER%TPWinShortcut\shortcut_icon_4.ico"
     },
     "shortcut_icon_5": {
         "category": "icon",
         "id": PLUGIN_ID + ".states.shortcut_icon_5",
         "type": "text",
         "desc": "Path of the shortcut icon 5",
-        "default": "%TP_PLUGIN_FOLDER%winShortcut\shortcut_icon_5.ico"
+        "default": "%TP_PLUGIN_FOLDER%TPWinShortcut\shortcut_icon_5.ico"
     },
 
     #path
