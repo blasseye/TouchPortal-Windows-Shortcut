@@ -1,13 +1,18 @@
 import TouchPortalAPI as TP
+from TouchPortalAPI.logger import Logger
+
 import os
 from utils import getIcon
+from TPPEntry import *
+
 
 directory_shortcuts = '...'
 directory_icons = '...'
 nb_shortcut = 5
 
 # Setup callbacks and connection
-TPClient = TP.Client("TP_WIN_SHORTCUT")    
+TPClient = TP.Client(TP_PLUGIN_INFO["id"])
+g_log = Logger(TP_PLUGIN_INFO["id"])
 
 def updateShortcutList(directory):
     # Check if directory exists
