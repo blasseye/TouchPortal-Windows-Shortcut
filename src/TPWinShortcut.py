@@ -107,8 +107,13 @@ def update_shortcuts_list(directory):
         return []
 
     # List files in the directory
-    files = os.listdir(directory)
-
+    allowed_extensions  = ['.lnk', '.exe', '.url']
+    files = []
+    for file in os.listdir(directory):
+        if any(file.endswith(extension) for extension in allowed_extensions):
+            # Add the full path of the file to the list
+            files.append(os.path.join(directory, file))
+            
     # Return the list of files
     return files
 
