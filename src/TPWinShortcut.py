@@ -6,7 +6,8 @@ from TPPEntry import *
 import sys
 from utils import getIcon
 
-directory_icons = "%TP_PLUGIN_FOLDER%TPWinShortcut"
+# directory_icons = "%TP_PLUGIN_FOLDER%TPWinShortcut"
+directory_icons = "C:/Users/benja/Desktop"
 nb_shortcut = 6
 
 # Setup callbacks and connection
@@ -16,12 +17,12 @@ g_log = Logger(TP_PLUGIN_INFO["id"])
 def updateShortcutList(directory):
     # Check if directory exists
     if not os.path.exists(directory):
-        print(f"The directory '{directory}' does not exist.")
+        g_log.debug(f"The directory '{directory}' does not exist.")
         return []
     
     # Check if the path points to a directory
     if not os.path.isdir(directory):
-        print(f"'{directory}' is not a valid directory.")
+        g_log.debug(f"'{directory}' is not a valid directory.")
         return []
 
     # List files in the directory
@@ -31,9 +32,10 @@ def updateShortcutList(directory):
     return files
 
 def stateUpdate():
+    directory_shortcuts = "C:/Users/benja/Jeux"
     list_file = updateShortcutList(directory_shortcuts)
     for i in range(nb_shortcut):
-        TPClient.stateUpdate(f"TP.Plugins.win_shortcut.states.shortcut_path_{i}",list_file[i])
+        TPClient.stateUpdate(TP_PLUGIN_INFO["id"]+f".states.shortcut_path_{i}",list_file[i])
         getIcon.updateIcon(directory_shortcuts,directory_icons,list_file[i],i)
 
 
@@ -44,6 +46,7 @@ def handleSettings(settings, on_connect=False):
 
     if (value := settings.get(TP_PLUGIN_SETTINGS['Shortcut directory']['name'])) is not None:
         TP_PLUGIN_SETTINGS['Shortcut directory']['value'] = value
+        directory_shortcuts = value
     else :
         TPClient.showNotification(
             notificationId="blasseye.TP.Plugins.Update_Check",
@@ -77,23 +80,20 @@ def checkUpdate(data):
 
 # This event handler will run once when the client connects to Touch Portal
 @TPClient.on(TP.TYPES.onConnect)
-def onStart(data):
-    global running
-    checkUpdate(data)
+def onConnect(data):
     g_log.info(f"Connected to TP v{data.get('tpVersionString', '?')}, plugin v{data.get('pluginVersion', '?')}.")
     g_log.debug(f"Connection: {data}")
-    if settings := data.get('settings'):
-        handleSettings(settings, True)
-    running = True
 
+    #checkUpdate(data)
+    stateUpdate()
 
+    TPClient.settingUpdate("Version", data['pluginVersion'])
+    TPClient.settingUpdate("Is Running","True")
 
-    print("Connected!", data)
     # Update a state value in TouchPortal
-    TPClient.stateUpdate()
 
 @TPClient.on(TP.TYPES.onSettingUpdate)
-def settingHandler(data):
+def onSettingUpdate(data):
     g_log.debug(f"Settings: {data}")
     if settings := data.get('settings'):
         handleSettings(settings, False)
@@ -101,17 +101,23 @@ def settingHandler(data):
 # Shutdown handler, called when Touch Portal wants to stop your plugin.
 @TPClient.on(TP.TYPES.onShutdown)
 def onShutdown(data):
-    print("Got Shutdown Message! Shutting Down the Plugin!")
-    # Terminates the connection and returns from connect()
-    TPClient.disconnect()
+    g_log.debug(f"Connection: {data}")
+    try:
+        TPClient.settingUpdate("Is Running","False")
+    except ConnectionResetError:
+        pass
+    g_log.info('Received shutdown event from TP Client.')
 
+# Error handler
+@TPClient.on(TP.TYPES.onError)
+def onError(exc):
+    g_log.error(f'Error in TP Client event handler: {repr(exc)}')
 
 # main
     
 
 def main():
-    global TPClient, g_log, running
-    ret = 0
+    global TPClient, g_log
 
     # Default log file destination
     logFile = f"./{PLUGIN_ID}.log"

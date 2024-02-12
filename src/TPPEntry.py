@@ -8,25 +8,31 @@ TPSDK_DEFAULT_VERSION = 6
 TP_PLUGIN_INFO = {
     'sdk': 6,
     'version': __version__,
-    'name': "Windows-Shortcut",
+    'name': "TouchPortal Windows Shortcut",
     "id": PLUGIN_ID,
-    'plugin_start_cmd_windows': "%TP_PLUGIN_FOLDER%TPWinShortcut\\TPWinShortcut.exe",
+    'plugin_start_cmd': "%TP_PLUGIN_FOLDER%TPWinShortcut\\TPWinShortcut.exe",
     'configuration': {
         'colorDark': '#0d162c',
         'colorLight': '#4b84f3',
-    },
-    "doc": {
-        "repository": "KillerBOSS2019:TP-Speed-Test-Plugin",
-        "Install": "1. Download latest version of plugin for your system.\n2. Import downloaded tpp by click the gear button next to email/notification icon.\n3. If this is first plugin, you will need to restart TouchPortal for it to work.",
-        "description": "SpeedTest Plugin using https://www.speedtest.net/ API for [TouchPortal](https://www.touch-portal.com/)"
     }
 }
 
 TP_PLUGIN_SETTINGS = {
+    "Version": {
+        "name": "Version",
+        "type": "text",
+        "default": "0",
+        "readOnly": True
+    },
+    "Is Running": {
+        "name": "Is Running",
+        "type": "text",
+        "default": "False",
+        "readOnly": True
+    },
     "Shortcut directory": {
         "name":"Shortcut directory",
         "type":"text",
-        "isPassword":False,
         "readOnly": False
     }
 }
@@ -34,7 +40,7 @@ TP_PLUGIN_SETTINGS = {
 TP_PLUGIN_CATEGORIES = {
     "main": {
         "id": PLUGIN_ID + ".main",
-        "name": "Touch Portal Windows Shortcut",
+        "name": "Windows Shortcut",
         "imagepath": "%TP_PLUGIN_FOLDER%TPWinShortcut\\icon.png",
     },
     "icon": {
