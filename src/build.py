@@ -19,12 +19,9 @@ OUTPUT_PATH = "./"
 
 PLUGIN_VERSION = __version__
 
-ADDITIONAL_FILES = [
-]
+ADDITIONAL_FILES = []
 
-ADDITIONAL_PYINSTALLER_ARGS = [
-    "--log-level=WARN"
-]
+ADDITIONAL_PYINSTALLER_ARGS = ["--log-level=WARN"]
 
 if __name__ == "__main__":
     validateBuild()
