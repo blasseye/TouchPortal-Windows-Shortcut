@@ -16,12 +16,6 @@ TP_PLUGIN_INFO = {
 }
 
 TP_PLUGIN_SETTINGS = {
-    "Version": {
-        "name": "Version",
-        "type": "text",
-        "default": "0",
-        "readOnly": True,
-    },
     "Is Running": {
         "name": "Is Running",
         "type": "text",
@@ -31,6 +25,17 @@ TP_PLUGIN_SETTINGS = {
     "Shortcut directory": {
         "name": "Shortcut directory",
         "type": "text",
+        "readOnly": False,
+    },
+    "Icon directory": {
+        "name": "Icon directory",
+        "type": "text",
+        "readOnly": False,
+    },
+    "Refresh shortcut": {
+        "name": "Refresh shortcut",
+        "type": "number",
+        "default": "30",
         "readOnly": False,
     },
 }
@@ -45,113 +50,20 @@ TP_PLUGIN_CATEGORIES = {
     "path": {"id": PLUGIN_ID + ".path", "name": "Path of the shortcut"},
 }
 
-TP_PLUGIN_ACTIONS = {}
+TP_PLUGIN_STATES = {}
 
-TP_PLUGIN_STATES = {
-    # icon
-    "shortcut_icon_0": {
+for i in range(20):
+    icon_key = f"shortcut_icon_{i}"
+    path_key = f"shortcut_path_{i}"
+    TP_PLUGIN_STATES[icon_key] = {
         "category": "icon",
-        "id": PLUGIN_ID + ".states.shortcut_icon_0",
+        "id": f"{PLUGIN_ID}.states.{icon_key}",
         "type": "text",
-        "desc": "Path of the shortcut icon 0",
-        "default": "%TP_PLUGIN_FOLDER%TPWinShortcut\\shortcut_icon_0.ico",
-    },
-    "shortcut_icon_1": {
-        "category": "icon",
-        "id": PLUGIN_ID + ".states.shortcut_icon_1",
-        "type": "text",
-        "desc": "Path of the shortcut icon 1",
-        "default": "%TP_PLUGIN_FOLDER%TPWinShortcut\\shortcut_icon_1.ico",
-    },
-    "shortcut_icon_2": {
-        "category": "icon",
-        "id": PLUGIN_ID + ".states.shortcut_icon_2",
-        "type": "text",
-        "desc": "Path of the shortcut icon 2",
-        "default": "%TP_PLUGIN_FOLDER%TPWinShortcut\\shortcut_icon_2.ico",
-    },
-    "shortcut_icon_3": {
-        "category": "icon",
-        "id": PLUGIN_ID + ".states.shortcut_icon_3",
-        "type": "text",
-        "desc": "Path of the shortcut icon 3",
-        "default": "%TP_PLUGIN_FOLDER%TPWinShortcut\\shortcut_icon_3.ico",
-    },
-    "shortcut_icon_4": {
-        "category": "icon",
-        "id": PLUGIN_ID + ".states.shortcut_icon_4",
-        "type": "text",
-        "desc": "Path of the shortcut icon 4",
-        "default": "%TP_PLUGIN_FOLDER%TPWinShortcut\\shortcut_icon_4.ico",
-    },
-    "shortcut_icon_5": {
-        "category": "icon",
-        "id": PLUGIN_ID + ".states.shortcut_icon_5",
-        "type": "text",
-        "desc": "Path of the shortcut icon 5",
-        "default": "%TP_PLUGIN_FOLDER%TPWinShortcut\\shortcut_icon_5.ico",
-    },
-    # path
-    "shortcut_path_0": {
-        "category": "path",
-        "id": PLUGIN_ID + ".states.shortcut_path_0",
-        "type": "text",
-        "desc": "Path of the shortcut 0",
-        "default": "",
-    },
-    "shortcut_path_1": {
-        "category": "path",
-        "id": PLUGIN_ID + ".states.shortcut_path_1",
-        "type": "text",
-        "desc": "Path of the shortcut 1",
-        "default": "",
-    },
-    "shortcut_path_2": {
-        "category": "path",
-        "id": PLUGIN_ID + ".states.shortcut_path_2",
-        "type": "text",
-        "desc": "Path of the shortcut 2",
-        "default": "",
-    },
-    "shortcut_path_3": {
-        "category": "path",
-        "id": PLUGIN_ID + ".states.shortcut_path_3",
-        "type": "text",
-        "desc": "Path of the shortcut 3",
-        "default": "",
-    },
-    "shortcut_path_4": {
-        "category": "path",
-        "id": PLUGIN_ID + ".states.shortcut_path_4",
-        "type": "text",
-        "desc": "Path of the shortcut 4",
-        "default": "",
-    },
-    "shortcut_path_5": {
-        "category": "path",
-        "id": PLUGIN_ID + ".states.shortcut_path_5",
-        "type": "text",
-        "desc": "Path of the shortcut 5",
-        "default": "",
-    },
-}
-
-TP_PLUGIN_EVENTS = {
-    "shortcut_icon": {
-        "id": PLUGIN_ID + ".events.shortcut_icon",
-        "name": "Keep Buttons Icon same as Shortcut",
-        "format": "Keep Buttons Icon same as $val",
-        "type": "communicate",
-        "valueType": "choice",
-        "valueChoices": [
-            PLUGIN_ID + ".states.shortcut_icon_0",
-            PLUGIN_ID + ".states.shortcut_icon_1",
-            PLUGIN_ID + ".states.shortcut_icon_2",
-            PLUGIN_ID + ".states.shortcut_icon_3",
-            PLUGIN_ID + ".states.shortcut_icon_4",
-            PLUGIN_ID + ".states.shortcut_icon_5",
-        ],
-        "valueStateId": "icon",
-        "category": "main",
+        "desc": f"Path of the shortcut icon {i}",
     }
-}
+    TP_PLUGIN_STATES[path_key] = {
+        "category": "path",
+        "id": f"{PLUGIN_ID}.states.{path_key}",
+        "type": "text",
+        "desc": f"Path of the shortcut {i}",
+    }

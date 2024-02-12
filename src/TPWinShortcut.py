@@ -11,9 +11,10 @@ import win32ui
 import win32gui
 import win32com.client
 import win32con
+from threading import Thread
+from time import sleep
+import pythoncom
 
-directory_icons = "%TP_PLUGIN_FOLDER%TPWinShortcu/"
-nb_shortcut = 6
 
 # Setup callbacks and connection
 TPClient = TP.Client(TP_PLUGIN_INFO["id"])
@@ -64,23 +65,20 @@ def get_lnk_icon(file_path, output_path):
 def get_exe_icon(file_path, output_path):
     ico_x = win32api.GetSystemMetrics(win32con.SM_CXICON)
     ico_y = win32api.GetSystemMetrics(win32con.SM_CYICON)
-    print(ico_x)
-    print(ico_y)
     large, small = win32gui.ExtractIconEx(file_path, 0)
     win32gui.DestroyIcon(small[0])
     hdc = win32ui.CreateDCFromHandle(win32gui.GetDC(0))
     hbmp = win32ui.CreateBitmap()
-    hbmp.CreateCompatibleBitmap(hdc, ico_x, ico_x)
+    hbmp.CreateCompatibleBitmap(hdc, ico_x, ico_y)
     hdc = hdc.CreateCompatibleDC()
     hdc.SelectObject(hbmp)
     hdc.DrawIcon((0, 0), large[0])
     hbmp.SaveBitmapFile(hdc, output_path)
-    return
 
 
-def get_icon(folder_path, folder_output_icon, file, nb):
-    output_ico = f"{folder_output_icon}shortcut_icon_{nb}.ico"
-    file_path = f"{folder_path}{file}"
+def get_icon(file, nb):
+    output_ico = f"{directory_icon}shortcut_icon_{nb}.ico"
+    file_path = file
     extension = get_extension(file_path)
     if extension == ".url":
         get_url_icon(file_path, output_ico)
@@ -89,8 +87,13 @@ def get_icon(folder_path, folder_output_icon, file, nb):
     elif extension == ".exe":
         get_exe_icon(file_path, output_ico)
 
+def reset_icon(nb):
+    tp_plugin_folder  = os.path.dirname(os.path.abspath(sys.argv[0]))
+    output_ico = f"{directory_icon}shortcut_icon_{nb}.ico"
+    icon_file = f"{tp_plugin_folder}\shortcut_icon_default.ico"
+    shutil.copy(icon_file, output_ico)
 
-def updateShortcutList(directory):
+def update_shortcuts_list(directory):
     # Check if directory exists
     if not os.path.exists(directory):
         g_log.debug(f"The directory '{directory}' does not exist.")
@@ -108,24 +111,56 @@ def updateShortcutList(directory):
     return files
 
 
-def stateUpdate():
-    directory_shortcuts = "C:/Users/benja/Jeux/"
-    list_file = updateShortcutList(directory_shortcuts)
-    for i in range(nb_shortcut):
-        TPClient.stateUpdate(
-            TP_PLUGIN_INFO["id"] + f".states.shortcut_path_{i}",
-            directory_shortcuts + list_file[i],
-        )
-        get_icon(
-            directory_shortcuts,
-            directory_icons,
-            directory_shortcuts + list_file[i],
-            i,
-        )
+def state_update():
+    pythoncom.CoInitialize()
+    try:
+        while TPClient.isConnected():
+            time = 0
+            if time == 0:
+                list_file = update_shortcuts_list(directory_shortcuts)
+                nb_shortcut = len(list_file)
+                if nb_shortcut >= 20:
+                    nb_shortcut = 20
+                    for i in range(nb_shortcut):
+                        TPClient.stateUpdate(
+                            TP_PLUGIN_INFO["id"] + f".states.shortcut_path_{i}",
+                            directory_shortcuts + list_file[i],
+                        )
+                        get_icon(
+                            directory_shortcuts + list_file[i],
+                            i,
+                        )
+                else: 
+                    for i in range(nb_shortcut):
+                        TPClient.stateUpdate(
+                            TP_PLUGIN_INFO["id"] + f".states.shortcut_path_{i}",
+                            directory_shortcuts + list_file[i],
+                        )
+                        get_icon(
+                            directory_shortcuts + list_file[i],
+                            i,
+                        )
+                    for i in range(nb_shortcut, 21):
+                        TPClient.stateUpdate(
+                            TP_PLUGIN_INFO["id"] + f".states.shortcut_path_{i}",
+                            "",
+                        )
+                        reset_icon(i)
+                time=+1
+                sleep(1)
+                if time == timer: 
+                    time = 0
+    except Exception:
+        from traceback import format_exc
+        g_log.info(f"ERRO : {format_exc()}")
+    pythoncom.CoUninitialize()
 
 
-def handleSettings(settings, on_connect=False):
+def handle_settings(settings, on_connect=False):
     global directory_shortcuts
+    global directory_icon
+
+    global timer
 
     settings = {
         list(settings[i])[0]: list(settings[i].values())[0]
@@ -142,11 +177,23 @@ def handleSettings(settings, on_connect=False):
             notificationId="blasseye.TP.Plugins.Update_Check",
             title="TouchPortal-Windows-Shortcut : Folder path not configured",
             msg="Go to setting, Setting...>Plug-ins>Windows-Shortcut, and set the parameter.",
-            options=[{"id": "", "title": "Go to parametre"}],
+            options=[{"id": "test", "title": "Go to parametre"}],
         )
 
+    if (
+        value := settings.get(TP_PLUGIN_SETTINGS["Icon directory"]["name"])
+    ) is not None:
+        TP_PLUGIN_SETTINGS["Icon directory"]["value"] = value
+        directory_icon = value
 
-def checkUpdate(data):
+    if (
+        value := settings.get(TP_PLUGIN_SETTINGS["Refresh shortcut"]["name"])
+    ) is not None:
+        TP_PLUGIN_SETTINGS["Refresh shortcut"]["value"] = value
+        timer = int(value)
+
+
+def check_update(data):
     """Checking if Plugin needs updated"""
     github_check = TP.Tools.updateCheck(
         "blasseye", "TouchPortal-Windows-Shortcut"
@@ -164,30 +211,25 @@ def checkUpdate(data):
         )
 
 
-# ------------------------------------------------------------
-
-
 @TPClient.on(TP.TYPES.onConnect)
 def onConnect(data):
     g_log.info(
         f"""Connected to TP v{data.get('tpVersionString', '?')}, plugin v{data.get('pluginVersion', '?')}."""
     )
-    g_log.info(f"Connection: {data}")
-
-    # checkUpdate(data)
-    stateUpdate()
-
-    TPClient.settingUpdate("Version", data["pluginVersion"])
+    g_log.debug(f"Connection: {data}")
     TPClient.settingUpdate("Is Running", "True")
 
-    # Update a state value in TouchPortal
+    if settings := data.get("settings"):
+        handle_settings(settings, True)
+
+    Thread(target=state_update).start()
 
 
 @TPClient.on(TP.TYPES.onSettingUpdate)
 def onSettingUpdate(data):
     g_log.debug(f"Settings: {data}")
     if settings := data.get("settings"):
-        handleSettings(settings, False)
+        handle_settings(settings, False)
 
 
 @TPClient.on(TP.TYPES.onShutdown)
@@ -205,18 +247,11 @@ def onError(exc):
     g_log.error(f"Error in TP Client event handler: {repr(exc)}")
 
 
-# main
-
-
 def main():
     global TPClient, g_log
 
-    # Default log file destination
-    logFile = f"./{TP_PLUGIN_INFO['id']}.log"
-    # Default log stream destination
-    logStream = sys.stdout
-
-    parser = ArgumentParser(fromfile_prefix_chars="@")
+    # Handle CLI arguments
+    parser = ArgumentParser()
     parser.add_argument("-d", action="store_true", help="Use debug logging.")
     parser.add_argument(
         "-w", action="store_true", help="Only log warnings and errors."
@@ -225,14 +260,12 @@ def main():
         "-q", action="store_true", help="Disable all logging (quiet)."
     )
     parser.add_argument(
-        "-l",
-        metavar="<logfile>",
-        help=f"Log file name (default is '{logFile}'). Use 'None' to disable file logging.",
+        "-l", metavar="<logfile>", help="Log to this file (default is stdout)."
     )
     parser.add_argument(
         "-s",
-        metavar="<stream>",
-        help="Log to output stream: 'stdout' (default), 'stderr', or 'none'.",
+        action="store_true",
+        help="If logging to file, also output to stdout.",
     )
 
     # His processes the actual command line and populates the `opts` dict.
@@ -289,7 +322,6 @@ def main():
         g_log.error(f"Exception in TP Client:\n{format_exc()}")
         ret = -1
     finally:
-        g_log.info("Disconnection.")
         TPClient.disconnect()
 
     del TPClient
