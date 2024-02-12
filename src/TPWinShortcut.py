@@ -142,7 +142,7 @@ def state_update():
                             directory_shortcuts + list_file[i],
                             i,
                         )
-                    for i in range(nb_shortcut, 21):
+                    for i in range(nb_shortcut, 20):
                         TPClient.stateUpdate(
                             TP_PLUGIN_INFO["id"] + f".states.shortcut_path_{i}",
                             "",
