@@ -87,11 +87,13 @@ def get_icon(file, nb):
     elif extension == ".exe":
         get_exe_icon(file_path, output_ico)
 
+
 def reset_icon(nb):
-    tp_plugin_folder  = os.path.dirname(os.path.abspath(sys.argv[0]))
+    tp_plugin_folder = os.path.dirname(os.path.abspath(sys.argv[0]))
     output_ico = f"{directory_icon}shortcut_icon_{nb}.ico"
     icon_file = f"{tp_plugin_folder}\shortcut_icon_default.ico"
     shutil.copy(icon_file, output_ico)
+
 
 def update_shortcuts_list(directory):
     # Check if directory exists
@@ -130,7 +132,7 @@ def state_update():
                             directory_shortcuts + list_file[i],
                             i,
                         )
-                else: 
+                else:
                     for i in range(nb_shortcut):
                         TPClient.stateUpdate(
                             TP_PLUGIN_INFO["id"] + f".states.shortcut_path_{i}",
@@ -146,12 +148,13 @@ def state_update():
                             "",
                         )
                         reset_icon(i)
-                time=+1
+                time = +1
                 sleep(1)
-                if time == timer: 
+                if time == timer:
                     time = 0
     except Exception:
         from traceback import format_exc
+
         g_log.info(f"ERRO : {format_exc()}")
     pythoncom.CoUninitialize()
 

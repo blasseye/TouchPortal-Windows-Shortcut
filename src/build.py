@@ -19,9 +19,7 @@ OUTPUT_PATH = "./"
 
 PLUGIN_VERSION = __version__
 
-ADDITIONAL_FILES = [
-    "shortcut_icon_default.ico"
-]
+ADDITIONAL_FILES = ["shortcut_icon_default.ico"]
 
 ADDITIONAL_PYINSTALLER_ARGS = ["--log-level=WARN"]
 
