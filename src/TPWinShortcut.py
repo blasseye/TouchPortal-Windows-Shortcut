@@ -107,7 +107,7 @@ def update_shortcuts_list(directory):
         return []
 
     # List files in the directory
-    allowed_extensions  = ['.lnk', '.exe', '.url']
+    allowed_extensions = [".lnk", ".exe", ".url"]
     files = []
     for file in os.listdir(directory):
         if any(file.endswith(extension) for extension in allowed_extensions):
@@ -153,10 +153,10 @@ def state_update():
                             "",
                         )
                         reset_icon(i)
-                time = +1
-                sleep(1)
-                if time == timer:
-                    time = 0
+            time = +1
+            sleep(1)
+            if time == timer:
+                time = 0
     except Exception:
         from traceback import format_exc
 
