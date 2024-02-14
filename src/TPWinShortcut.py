@@ -241,7 +241,7 @@ def onConnect(data):
 
 
 @TPClient.on(TP.TYPES.onNotificationOptionClicked)
-def onNotificationOptionClicked(data):
+def onNotification(data):
     g_log.debug("Notification option: ", data)
     if (
         data["optionId"]
