@@ -14,6 +14,7 @@ import win32con
 from threading import Thread
 from time import sleep
 import pythoncom
+import subprocess
 
 
 # Setup callbacks and connection
@@ -207,14 +208,18 @@ def check_update(data):
         "blasseye", "TouchPortal-Windows-Shortcut"
     )
     plugin_version = str(data["pluginVersion"])
-    plugin_version = plugin_version[:1] + "." + plugin_version[1:]
-    if github_check[1:4] != plugin_version[0:3]:
+    github_norm = str("".join(github_check.split(".")))
+    if github_norm != plugin_version:
         TPClient.showNotification(
-            notificationId="blasseye.TP.Plugins.Update_Check",
-            title="TouchPortal-Windows-Shortcut: The shortcut folder path is invalid",
+            notificationId=TP_PLUGIN_INFO["id"] + ".Update_Check",
+            title="TouchPortal-Windows-Shortcut: New version available",
             msg="A new TouchPortal-Windows-Shortcut Version is available and ready to Download. This may include Bug Fixes and or New Features.",
             options=[
-                {"id": "Download Update", "title": "Click here to Update"}
+                {
+                    "id": TP_PLUGIN_INFO["id"]
+                    + ".updateNotification.downloadButton",
+                    "title": "Click here to Update",
+                }
             ],
         )
 
@@ -227,10 +232,30 @@ def onConnect(data):
     g_log.debug(f"Connection: {data}")
     TPClient.settingUpdate("Is Running", "True")
 
+    check_update(data)
+
     if settings := data.get("settings"):
         handle_settings(settings, True)
 
     Thread(target=state_update).start()
+
+
+@TPClient.on(TP.TYPES.onNotificationOptionClicked)
+def onNotificationOptionClicked(data):
+    g_log.debug("Notification option: ", data)
+    if (
+        data["optionId"]
+        == TP_PLUGIN_INFO["id"] + ".updateNotification.downloadButton"
+    ):
+        g_log.debug("User clicked download button")
+        name = "blasseye"
+        repository = "TouchPortal-Windows-Shortcut"
+        github_check = TP.Tools.updateCheck(name, repository)
+        subprocess.run(
+            f"Start https://github.com/{name}/{repository}/releases/tag/{github_check}",
+            stdout=subprocess.PIPE,
+            shell=True,
+        )
 
 
 @TPClient.on(TP.TYPES.onSettingUpdate)

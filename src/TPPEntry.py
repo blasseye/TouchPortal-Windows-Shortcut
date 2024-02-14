@@ -1,4 +1,4 @@
-__version__ = 1
+__version__ = 102
 PLUGIN_ID = "TP.Plugins.win_shortcut"
 
 TPSDK_DEFAULT_VERSION = 6

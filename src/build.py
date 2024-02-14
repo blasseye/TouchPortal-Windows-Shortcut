@@ -1,4 +1,4 @@
-from TouchPortalAPI.tppbuild import *
+from TouchPortalAPI.tppbuild import validateBuild, runBuild
 from TPPEntry import __version__
 
 PLUGIN_MAIN = "TPWinShortcut.py"
